@@ -24,7 +24,7 @@ Before you begin, ensure you have the following installed on your system:
     ```
 3.  The backend is configured to use the following credentials by default:
     *   **Username:** `root`
-    *   **Password:** *(Empty)*
+    *   **Password:** *root*
     > [!TIP]
     > If your MySQL credentials are different, update them in `../SGIC_Online_Exam_Backend/src/main/resources/application.properties`.
 
