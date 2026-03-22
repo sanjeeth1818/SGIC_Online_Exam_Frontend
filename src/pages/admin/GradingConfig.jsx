@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { LayoutGrid, Save, Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Save, AlertCircle, CheckCircle, RefreshCw, Layers, Award, Info, ChevronRight } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const GradingConfig = () => {
     const [notification, setNotification] = useState(null);
@@ -13,7 +14,7 @@ const GradingConfig = () => {
     useEffect(() => {
         const fetchGradingSettings = async () => {
             try {
-                const res = await fetch('/api/settings/grading');
+                const res = await fetch(`${API_BASE_URL}/api/settings/grading`);
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.length > 0) {
@@ -35,7 +36,7 @@ const GradingConfig = () => {
     const handleGradingSubmit = async (e) => {
         e.preventDefault();
         try {
-            const res = await fetch('/api/settings/grading', {
+            const res = await fetch(`${API_BASE_URL}/api/settings/grading`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(gradingScales)

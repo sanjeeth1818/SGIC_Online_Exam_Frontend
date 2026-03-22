@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { createPortal } from 'react-dom';
-import { Search, Eye, Download, PieChart, TrendingUp, Clock, Calendar, CheckCircle2, XCircle, ChevronDown, ChevronUp, Users, BookOpen, FileSpreadsheet, FileText as FilePdf, Mail, Trophy, ArrowLeft, AlertTriangle, BarChart2, UserX, Check } from 'lucide-react';
+import { Search, Eye, Download, PieChart, TrendingUp, Clock, Calendar, ChevronDown, ChevronUp, Users, BookOpen, FileSpreadsheet, FileText as FilePdf, Mail, Trophy, ArrowLeft, AlertTriangle, BarChart2, UserX, Check, Filter, MoreVertical, ExternalLink, User, FileText, CheckCircle, ChevronRight, ChevronLeft, ArrowRight, Trash2, X, ArrowDownToLine, CircleX } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
@@ -182,8 +183,8 @@ const Results = () => {
         try {
             if (!isSilent) setIsLoading(true);
             const [resSub, resStats] = await Promise.all([
-                fetch('/api/submissions'),
-                fetch('/api/submissions/stats')
+                fetch(`${API_BASE_URL}/api/submissions`),
+                fetch(`${API_BASE_URL}/api/submissions/stats`)
             ]);
 
             const subs = await resSub.json();
@@ -270,7 +271,7 @@ const Results = () => {
     React.useEffect(() => {
         fetchData();
         // Fetch grading settings for filters
-        fetch('/api/settings/grading')
+        fetch(`${API_BASE_URL}/api/settings/grading`)
             .then(res => res.ok ? res.json() : [])
             .then(data => setGradingScales(data.sort((a, b) => b.minScore - a.minScore)))
             .catch(err => console.error('Failed to fetch grading scales:', err));
@@ -342,12 +343,12 @@ const Results = () => {
             const examSub = resultsData.find(r => r.testName === testName);
             if (!examSub) { setLoadingCodes(false); return; }
             // Fetch all tests to find the matching test id
-            const testsRes = await fetch('/api/tests');
+            const testsRes = await fetch(`${API_BASE_URL}/api/tests`);
             if (testsRes.ok) {
                 const tests = await testsRes.json();
                 const match = tests.find(t => t.name === testName);
                 if (match) {
-                    const codesRes = await fetch(`/api/tests/${match.id}/student-codes`);
+                    const codesRes = await fetch(`${API_BASE_URL}/api/tests/${match.id}/student-codes`);
                     if (codesRes.ok) {
                         const data = await codesRes.json();
                         setExamStudentCodes(data);
@@ -671,7 +672,7 @@ const Results = () => {
     const handleExportPDF = (customData = null, customFilename = null) => {
         const doc = new jsPDF('p', 'mm', 'a4');
         const timestamp = new Date().toLocaleString();
-        const logoUrl = '/SGIC 2.png';
+        const logoUrl = '/sgic2.png';
         const dataToExport = customData || filteredResults;
 
         const addHeader = () => {
@@ -1051,7 +1052,7 @@ const Results = () => {
                                     onMouseEnter={e => { e.currentTarget.style.background = 'var(--error)'; e.currentTarget.style.color = 'white'; }}
                                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = 'var(--error)'; }}
                                 >
-                                    <XCircle size={14} strokeWidth={2.5} /> Clear
+                                    <CircleX size={14} strokeWidth={2.5} /> Clear
                                 </button>
                             )}
                         </div>
@@ -1342,8 +1343,8 @@ const Results = () => {
                                             <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}><div style={{ fontSize: '2.5rem', fontWeight: 1000, color: 'var(--text-primary)', lineHeight: 1 }}>{selectedStudent.score}%</div><div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.1em', marginTop: '0.2rem' }}>Accuracy</div></div>
                                         </div>
                                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', minWidth: '220px' }}>
-                                            <div style={{ padding: '1.25rem 1.5rem', background: 'white', borderRadius: '20px', border: '1.2px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1rem' }}><div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#ecfdf5', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CheckCircle2 size={24} /></div><div><div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Correct</div><div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>{selectedStudent.actualScore} Items</div></div></div>
-                                            <div style={{ padding: '1.25rem 1.5rem', background: 'white', borderRadius: '20px', border: '1.2px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1rem' }}><div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#fef2f2', color: 'var(--error)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><XCircle size={24} /></div><div><div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Incorrect</div><div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>{selectedStudent.maxScore - selectedStudent.actualScore} Items</div></div></div>
+                                            <div style={{ padding: '1.25rem 1.5rem', background: 'white', borderRadius: '20px', border: '1.2px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1rem' }}><div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#ecfdf5', color: 'var(--success)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CheckCircle size={24} /></div><div><div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Correct</div><div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>{selectedStudent.actualScore} Items</div></div></div>
+                                            <div style={{ padding: '1.25rem 1.5rem', background: 'white', borderRadius: '20px', border: '1.2px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1rem' }}><div style={{ width: '40px', height: '40px', borderRadius: '12px', background: '#fef2f2', color: 'var(--error)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}><CircleX size={24} /></div><div><div style={{ fontSize: '0.75rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Incorrect</div><div style={{ fontSize: '1.25rem', fontWeight: 900, color: 'var(--text-primary)' }}>{selectedStudent.maxScore - selectedStudent.actualScore} Items</div></div></div>
                                         </div>
                                     </div>
                                 </div>
@@ -1381,8 +1382,8 @@ const Results = () => {
                                                                 </div>
                                                                 <div style={{ display: 'grid', gridTemplateColumns: q.isCorrect ? '1fr' : '1fr 1fr', gap: '1.25rem' }}>
                                                                     {q.isCorrect ? (
-                                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#f0fdf4', color: '#16a34a', borderRadius: '18px', border: '2px solid #bbf7d0' }}><CheckCircle2 size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Final Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.studentAnswer}</div></div><div style={{ marginLeft: 'auto', background: '#22c55e', color: 'white', padding: '0.3rem 0.8rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 900 }}>CORRECT</div></div>
-                                                                    ) : (<><div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#fef2f2', color: '#dc2626', borderRadius: '18px', border: '2px solid #fecaca' }}><XCircle size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Selected Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.studentAnswer || 'NO RESPONSE'}</div></div></div><div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#f0fdf4', color: '#16a34a', borderRadius: '18px', border: '2px dashed #22c55e' }}><CheckCircle2 size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Correct Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.correctAnswer}</div></div></div></>)}
+                                                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#f0fdf4', color: '#16a34a', borderRadius: '18px', border: '2px solid #bbf7d0' }}><CheckCircle size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Final Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.studentAnswer}</div></div><div style={{ marginLeft: 'auto', background: '#22c55e', color: 'white', padding: '0.3rem 0.8rem', borderRadius: '8px', fontSize: '0.75rem', fontWeight: 900 }}>CORRECT</div></div>
+                                                                    ) : (<><div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#fef2f2', color: '#dc2626', borderRadius: '18px', border: '2px solid #fecaca' }}><CircleX size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Selected Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.studentAnswer || 'NO RESPONSE'}</div></div></div><div style={{ display: 'flex', alignItems: 'center', gap: '1rem', padding: '1.25rem 1.75rem', background: '#f0fdf4', color: '#16a34a', borderRadius: '18px', border: '2px dashed #22c55e' }}><CheckCircle size={24} /><div><div style={{ fontSize: '0.7rem', fontWeight: 900, textTransform: 'uppercase', marginBottom: '0.2rem', opacity: 0.8 }}>Correct Answer</div><div style={{ fontWeight: 900, fontSize: '1.1rem' }}>{q.correctAnswer}</div></div></div></>)}
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -1464,7 +1465,7 @@ const Results = () => {
                         onMouseEnter={e => { e.currentTarget.style.background = 'var(--error)'; e.currentTarget.style.color = 'white'; }}
                         onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = 'var(--error)'; }}
                     >
-                        <XCircle size={16} strokeWidth={2.5} /> Clear
+                        <CircleX size={16} strokeWidth={2.5} /> Clear
                     </button>
                 )}
             </div>

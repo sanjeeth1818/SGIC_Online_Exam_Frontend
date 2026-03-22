@@ -36,7 +36,7 @@ const StudentLayout = () => {
                 zIndex: 100
             }}>
                 {/* Logo */}
-                <img src="/SGIC.png" alt="SGIC Logo" style={{ height: '90px', objectFit: 'contain' }} />
+                <img src="/sgic.png" alt="SGIC Logo" style={{ height: '90px', objectFit: 'contain' }} />
 
                 {!isLoginPage && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', animation: 'fadeIn 0.3s ease' }}>

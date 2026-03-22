@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { UserPlus, Users, Search, Mail, Phone, MapPin, CreditCard, Calendar, Edit2, Trash2, X, AlertCircle, CheckCircle, Clock, UserX, RefreshCw, BookOpen, Clock3, History, FileText, UserCheck, ChevronRight, Hash, Filter } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const Students = () => {
     const [students, setStudents] = useState([]);
@@ -282,7 +283,7 @@ const Students = () => {
     const fetchStudents = async (isSilent = false) => {
         try {
             if (!isSilent) setLoading(true);
-            const response = await fetch('/api/students');
+            const response = await fetch(`${API_BASE_URL}/api/students`);
             if (response.ok) {
                 const data = await response.json();
                 setStudents(data);
@@ -433,7 +434,7 @@ const Students = () => {
         const method = editingId ? 'PUT' : 'POST';
 
         try {
-            const response = await fetch(url, {
+            const response = await fetch(`${API_BASE_URL}${url}`, {
                 method,
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
@@ -472,7 +473,7 @@ const Students = () => {
         setSubmitting(true);
 
         try {
-            const response = await fetch(`/api/students/${statusData.id}/status`, {
+            const response = await fetch(`${API_BASE_URL}/api/students/${statusData.id}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -512,7 +513,7 @@ const Students = () => {
     const confirmDelete = async (id) => {
         setSubmitting(true);
         try {
-            const response = await fetch(`/api/students/${id}`, {
+            const response = await fetch(`${API_BASE_URL}/api/students/${id}`, {
                 method: 'DELETE',
             });
 

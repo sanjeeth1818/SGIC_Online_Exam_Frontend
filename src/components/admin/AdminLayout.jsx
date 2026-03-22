@@ -53,7 +53,7 @@ const AdminLayout = () => {
             }}>
                 <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                     <img
-                        src="/SGIC 2.png"
+                        src="/sgic2.png"
                         alt="SGIC Logo"
                         style={{ width: '80px', height: '80px', objectFit: 'contain' }}
                     />

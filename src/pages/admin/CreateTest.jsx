@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef } from 'react';
 import {
     Search, Plus, Filter, Calendar, Clock, Copy, Edit2, Trash2, Lock,
-    Play, XCircle, Eye, FileText, Check, Users, List, Settings,
+    Play, CircleX, Eye, FileText, Check, Users, List, Settings,
     ArrowLeft, ArrowRight, Layers, Globe, Key, FilePlus, LayoutDashboard, Hash,
-    AlertCircle
+    AlertCircle, Folder, HelpCircle
 } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const CreateTest = () => {
     const [view, setView] = useState('create'); // 'create' or 'manage'
@@ -126,8 +127,8 @@ const CreateTest = () => {
     const fetchData = async (isSilent = false) => {
         try {
             const [catRes, testRes] = await Promise.all([
-                fetch('/api/categories'),
-                fetch('/api/tests')
+                fetch(`${API_BASE_URL}/api/categories`),
+                fetch(`${API_BASE_URL}/api/tests`)
             ]);
 
             if (!catRes.ok || !testRes.ok) throw new Error('Failed to fetch data');
@@ -138,7 +139,7 @@ const CreateTest = () => {
             let activeQCounts = {};
             if (view === 'create' && !isSilent) {
                 try {
-                    const qRes = await fetch('/api/questions');
+                    const qRes = await fetch(`${API_BASE_URL}/api/questions`);
                     if (qRes.ok) {
                         const allQ = await qRes.json();
                         const activeQ = allQ.filter(q => q.status !== 'Inactive');
@@ -219,7 +220,7 @@ const CreateTest = () => {
     const fetchQuestions = async () => {
         setFetchingQuestions(true);
         try {
-            const res = await fetch('/api/questions');
+            const res = await fetch(`${API_BASE_URL}/api/questions`);
             if (res.ok) {
                 const data = await res.json();
                 setAllQuestions(data.filter(q => q.status !== 'Inactive'));
@@ -234,7 +235,7 @@ const CreateTest = () => {
     const fetchAvailableStudents = async () => {
         setFetchingStudents(true);
         try {
-            const res = await fetch('/api/students');
+            const res = await fetch(`${API_BASE_URL}/api/students`);
             if (res.ok) {
                 const data = await res.json();
                 const filtered = data.filter(s => {
@@ -286,7 +287,7 @@ const CreateTest = () => {
     const fetchStudentCodes = async (testId, isSilent = false) => {
         if (!isSilent) setFetchingCodes(true);
         try {
-            const res = await fetch(`/api/tests/${testId}/student-codes`);
+            const res = await fetch(`${API_BASE_URL}/api/tests/${testId}/student-codes`);
             if (res.ok) {
                 const data = await res.json();
                 setStudentCodes(data);
@@ -353,7 +354,7 @@ const CreateTest = () => {
 
     const handleStatusChange = async (id, newStatus) => {
         try {
-            const res = await fetch(`/api/tests/${id}/status`, {
+            const res = await fetch(`${API_BASE_URL}/api/tests/${id}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(newStatus)
@@ -377,7 +378,7 @@ const CreateTest = () => {
             return;
         }
         try {
-            const res = await fetch(`/api/tests/${addTimeModal.testId}/add-time`, {
+            const res = await fetch(`${API_BASE_URL}/api/tests/${addTimeModal.testId}/add-time`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -407,7 +408,7 @@ const CreateTest = () => {
 
     const handleDeleteTest = async (id) => {
         try {
-            const res = await fetch(`/api/tests/${id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/tests/${id}`, {
                 method: 'DELETE'
             });
             if (!res.ok) {
@@ -502,7 +503,7 @@ const CreateTest = () => {
         };
 
         try {
-            const res = await fetch(`/api/tests/${editModalData.id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/tests/${editModalData.id}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -564,7 +565,7 @@ const CreateTest = () => {
         };
 
         try {
-            const res = await fetch('/api/tests', {
+            const res = await fetch(`${API_BASE_URL}/api/tests`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -693,7 +694,7 @@ const CreateTest = () => {
                                             style={{ width: '100%', padding: '0.875rem 1.25rem', borderRadius: '14px', border: `2px solid ${errors.name ? 'var(--error)' : 'var(--border)'}`, fontSize: '1rem', outline: 'none', transition: 'all 0.2s', background: 'var(--bg-app)' }}
                                             onFocus={e => e.currentTarget.style.borderColor = errors.name ? 'var(--error)' : 'var(--primary)'} onBlur={e => e.currentTarget.style.borderColor = errors.name ? 'var(--error)' : 'var(--border)'}
                                         />
-                                        {errors.name && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XCircle size={12} /> {errors.name}</div>}
+                                        {errors.name && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CircleX size={12} /> {errors.name}</div>}
                                     </div>
 
                                     <div>
@@ -711,7 +712,7 @@ const CreateTest = () => {
                                             style={{ width: '100%', padding: '0.875rem 1.25rem', borderRadius: '14px', border: `2px solid ${errors.description ? 'var(--error)' : 'var(--border)'}`, fontSize: '1rem', outline: 'none', resize: 'none', fontFamily: 'inherit', transition: 'all 0.2s', background: 'var(--bg-app)' }}
                                             onFocus={e => e.currentTarget.style.borderColor = errors.description ? 'var(--error)' : 'var(--primary)'} onBlur={e => e.currentTarget.style.borderColor = errors.description ? 'var(--error)' : 'var(--border)'}
                                         ></textarea>
-                                        {errors.description && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XCircle size={12} /> {errors.description}</div>}
+                                        {errors.description && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CircleX size={12} /> {errors.description}</div>}
                                     </div>
                                 </div>
                             </div>
@@ -722,7 +723,7 @@ const CreateTest = () => {
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '2rem' }}>
                                     <div>
                                         <h2 style={{ fontSize: '1.5rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.5rem' }}><List size={24} color="var(--primary)" /> Question Selection</h2>
-                                        {errors.questions && <div style={{ color: 'var(--error)', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.5rem', padding: '0.75rem 1rem', background: 'var(--error-light)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><XCircle size={16} /> {errors.questions}</div>}
+                                        {errors.questions && <div style={{ color: 'var(--error)', fontSize: '0.875rem', fontWeight: 600, marginTop: '0.5rem', padding: '0.75rem 1rem', background: 'var(--error-light)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CircleX size={16} /> {errors.questions}</div>}
                                         <div style={{ display: 'flex', background: 'var(--bg-app)', padding: '0.375rem', borderRadius: '12px', border: '1px solid var(--border)', marginTop: '1rem', width: 'fit-content' }}>
                                             <button
                                                 onClick={() => {
@@ -917,7 +918,7 @@ const CreateTest = () => {
                                                 )}
                                             </div>
 
-                                            {errors[`batch_${groupIndex}_general`] && <div style={{ color: 'var(--error)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '1.5rem', padding: '0.75rem 1rem', background: 'var(--error-light)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><XCircle size={16} /> {errors[`batch_${groupIndex}_general`]}</div>}
+                                            {errors[`batch_${groupIndex}_general`] && <div style={{ color: 'var(--error)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '1.5rem', padding: '0.75rem 1rem', background: 'var(--error-light)', borderRadius: '12px', border: '1px solid rgba(239, 68, 68, 0.2)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}><CircleX size={16} /> {errors[`batch_${groupIndex}_general`]}</div>}
                                             <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--bg-surface)', borderRadius: '16px', border: `1px solid ${errors[`batch_${groupIndex}_date`] ? 'var(--error)' : 'var(--border)'}` }}>
                                                 <label style={{ display: 'block', marginBottom: '0.625rem', fontWeight: 700, fontSize: '0.75rem', color: errors[`batch_${groupIndex}_date`] ? 'var(--error)' : 'var(--text-tertiary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                                                     Exam Date <span style={{ color: 'var(--error)' }}>*</span>
@@ -952,7 +953,7 @@ const CreateTest = () => {
                                                         style={{ width: '100%', padding: '0.75rem 1rem 0.75rem 2.75rem', borderRadius: '12px', border: `2px solid ${errors[`batch_${groupIndex}_date`] ? 'var(--error)' : 'var(--border)'}`, outline: 'none', fontSize: '0.94rem', fontWeight: 600 }}
                                                     />
                                                 </div>
-                                                {errors[`batch_${groupIndex}_date`] && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XCircle size={12} /> {errors[`batch_${groupIndex}_date`]}</div>}
+                                                {errors[`batch_${groupIndex}_date`] && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CircleX size={12} /> {errors[`batch_${groupIndex}_date`]}</div>}
                                             </div>
 
                                             <div>
@@ -1050,7 +1051,7 @@ const CreateTest = () => {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                                {errors[`batch_${groupIndex}_students`] && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><XCircle size={12} /> {errors[`batch_${groupIndex}_students`]}</div>}
+                                                {errors[`batch_${groupIndex}_students`] && <div style={{ color: 'var(--error)', fontSize: '0.75rem', marginTop: '0.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}><CircleX size={12} /> {errors[`batch_${groupIndex}_students`]}</div>}
                                             </div>
                                         </div>
                                     ))}
@@ -1576,7 +1577,7 @@ const CreateTest = () => {
                                                     onMouseEnter={e => { e.currentTarget.style.background = 'var(--error)'; e.currentTarget.style.color = 'white'; }}
                                                     onMouseLeave={e => { e.currentTarget.style.background = 'rgba(239,68,68,0.1)'; e.currentTarget.style.color = 'var(--error)'; }}
                                                 >
-                                                    <XCircle size={18} />
+                                                    <CircleX size={18} />
                                                 </button>
                                             )}
                                             <button
@@ -2069,14 +2070,14 @@ const CreateTest = () => {
                                                             {isLocked && <Lock size={12} color="var(--error)" style={{ opacity: 0.8 }} />}
                                                             {s.name}
                                                             {!isLocked ? (
-                                                                <XCircle size={14} color="var(--text-tertiary)" style={{ cursor: 'pointer' }} onClick={() => {
+                                                                <CircleX size={14} color="var(--text-tertiary)" style={{ cursor: 'pointer' }} onClick={() => {
                                                                     const newGroups = [...editModalData.studentGroups];
                                                                     newGroups[gIdx].students = newGroups[gIdx].students.filter((_, i) => i !== sIdx);
                                                                     setEditModalData({ ...editModalData, studentGroups: newGroups });
                                                                 }} />
                                                             ) : (
                                                                 <div title={lockReason} style={{ cursor: 'not-allowed', display: 'flex', alignItems: 'center' }}>
-                                                                    <XCircle size={14} color="var(--border)" />
+                                                                    <CircleX size={14} color="var(--border)" />
                                                                 </div>
                                                             )}
                                                         </div>
@@ -2515,7 +2516,7 @@ const CreateTest = () => {
                                                                 });
                                                             }}
                                                             title="Add Extra Time"
-                                                            style={{ border: 'none', background: 'var(--bg-app)', color: 'var(--primary)', padding: '0.5rem 0.75rem', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid var(--border)' }}
+                                                            style={{ background: 'var(--bg-app)', color: 'var(--primary)', padding: '0.5rem 0.75rem', borderRadius: '10px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem', border: '1px solid var(--border)' }}
                                                         >
                                                             <Clock size={14} /> <Plus size={12} />
                                                         </button>
@@ -2558,7 +2559,7 @@ const CreateTest = () => {
                                     {addTimeModal.isUsedStatus && (
                                         <div style={{ background: 'rgba(59, 130, 246, 0.08)', color: 'var(--primary)', padding: '1rem', borderRadius: '16px', marginBottom: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', border: '1px solid rgba(59, 130, 246, 0.2)' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 800, fontSize: '0.8125rem' }}>
-                                                <XCircle size={16} /> RE-OPENING NOTICE
+                                                <CircleX size={16} /> RE-OPENING NOTICE
                                             </div>
                                             <div style={{ fontSize: '0.75rem', fontWeight: 600, opacity: 0.9 }}>
                                                 This will professionally re-activate the finished exam session for this student.

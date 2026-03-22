@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 import { Clock, BookOpen, AlertCircle, Check, User, ArrowRight } from 'lucide-react';
 
 const TestStart = () => {
@@ -36,7 +37,7 @@ const TestStart = () => {
         }
 
         try {
-            const res = await fetch('/api/exam-entry/validate', {
+            const response = await fetch(`${API_BASE_URL}/api/exam-entry/validate`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -45,7 +46,7 @@ const TestStart = () => {
                 })
             });
 
-            const data = await res.json();
+            const data = await response.json();
             if (!data.success) {
                 setError(data.message || 'Verification failed.');
                 setIsValidating(false);
@@ -53,7 +54,7 @@ const TestStart = () => {
             }
 
             // Fetch Student Name
-            const studentRes = await fetch(`/api/students/${data.studentId}`);
+            const studentRes = await fetch(`${API_BASE_URL}/api/students/${data.studentId}`);
             if (studentRes.ok) {
                 const studentData = await studentRes.json();
                 setStudentName(studentData.name);
@@ -68,7 +69,7 @@ const TestStart = () => {
             });
 
             // Fetch extra test config if needed (duration etc)
-            const testRes = await fetch(`/api/tests/${data.testId}`);
+            const testRes = await fetch(`${API_BASE_URL}/api/tests/${data.testId}`);
             if (testRes.ok) {
                 const fullTest = await testRes.json();
                 setTestDetails(prev => ({
@@ -101,7 +102,7 @@ const TestStart = () => {
         setCountdown(3);
 
         try {
-            const res = await fetch('/api/exam-entry/start', {
+            const res = await fetch(`${API_BASE_URL}/api/exam-entry/start`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -180,7 +181,7 @@ const TestStart = () => {
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                         <div style={{ width: '120px', height: '120px', borderRadius: '24px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                            <img src="/SGIC 2.png" alt="SGIC Logo" style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
+                            <img src="/sgic2.png" alt="SGIC Logo" style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
                         </div>
                         <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Examination Portal</h1>
                         <p style={{ color: 'var(--text-tertiary)', fontSize: '0.94rem', fontWeight: 600 }}>Secure Assessment System</p>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { User, Lock, Mail, Save, AlertCircle, CheckCircle } from 'lucide-react';
+import { Save, User, Lock, Mail, Shield, Bell, Globe, Palette, Database, Trash2, ShieldCheck, UserCog, History, Key, Check, Info, Camera, Send, FileCheck, CheckCircle, AlertCircle } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const Settings = () => {
     const [activeTab, setActiveTab] = useState('profile');
@@ -34,7 +35,7 @@ const Settings = () => {
                     currentUsername = parsed.username || currentUsername;
                 }
 
-                const res = await fetch(`/api/admin/profile/${currentUsername}`);
+                const res = await fetch(`${API_BASE_URL}/api/admin/profile/${currentUsername}`);
                 if (res.ok) {
                     const data = await res.json();
                     setProfileData({
@@ -50,7 +51,7 @@ const Settings = () => {
 
         const fetchEmailSettings = async () => {
             try {
-                const res = await fetch('/api/settings/email');
+                const res = await fetch(`${API_BASE_URL}/api/settings/email`);
                 if (res.ok) {
                     const data = await res.json();
                     setEmailData({
@@ -105,7 +106,7 @@ const Settings = () => {
                 currentUsername = parsed.username || currentUsername;
             }
 
-            const res = await fetch(`/api/admin/profile/${currentUsername}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/profile/${currentUsername}`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -160,7 +161,7 @@ const Settings = () => {
                 currentUsername = parsed.username || currentUsername;
             }
 
-            const res = await fetch(`/api/admin/change-password/${currentUsername}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/change-password/${currentUsername}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -194,7 +195,7 @@ const Settings = () => {
         }
 
         try {
-            const res = await fetch('/api/settings/email', {
+            const res = await fetch(`${API_BASE_URL}/api/settings/email`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(finalEmailData)
@@ -225,7 +226,7 @@ const Settings = () => {
         }
 
         try {
-            const res = await fetch('/api/settings/email/test', {
+            const res = await fetch(`${API_BASE_URL}/api/settings/email/test`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(finalEmailData)
@@ -268,7 +269,7 @@ const Settings = () => {
                 currentUsername = parsed.username || currentUsername;
             }
 
-            const res = await fetch(`/api/admin/verify-password/${currentUsername}`, {
+            const res = await fetch(`${API_BASE_URL}/api/admin/verify-password/${currentUsername}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ password: verificationPassword })

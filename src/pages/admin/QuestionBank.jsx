@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Search, Plus, Edit2, Trash2, ChevronLeft, Folder, HelpCircle, Check, X, AlertTriangle, Upload, FileText, Download, CheckCircle2, XCircle, ArrowRight } from 'lucide-react';
+import { Search, Plus, Upload, Filter, Grid, List as ListIcon, MoreVertical, Edit2, Trash2, X, Check, Save, AlertCircle, ChevronLeft, ChevronRight, FileText, Download, Database, Layers, CheckCircle, Folder, HelpCircle, AlertTriangle, CircleX } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const QuestionBank = () => {
+    // ... (rest of state stays same)
     const [categories, setCategories] = useState([]);
     const [questions, setQuestions] = useState([]);
 
@@ -11,7 +13,7 @@ const QuestionBank = () => {
     const [questionToDelete, setQuestionToDelete] = useState(null);
     const [editingQuestion, setEditingQuestion] = useState(null);
     const [searchTerm, setSearchTerm] = useState('');
-    const [statusFilter, setStatusFilter] = useState('All'); // 'All', 'Active', 'Inactive'
+    const [statusFilter, setStatusFilter] = useState('All'); 
 
     const [questionForm, setQuestionForm] = useState({
         type: 'MCQ',
@@ -35,8 +37,8 @@ const QuestionBank = () => {
     const fetchData = async () => {
         try {
             const [catRes, questRes] = await Promise.all([
-                fetch('/api/categories'),
-                fetch('/api/questions')
+                fetch(`${API_BASE_URL}/api/categories`),
+                fetch(`${API_BASE_URL}/api/questions`)
             ]);
 
             if (!catRes.ok || !questRes.ok) throw new Error('Failed to fetch data');
@@ -119,7 +121,7 @@ const QuestionBank = () => {
 
         try {
             if (editingQuestion) {
-                const res = await fetch(`/api/questions/${editingQuestion.id}`, {
+                const res = await fetch(`${API_BASE_URL}/api/questions/${editingQuestion.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(backendPayload)
@@ -127,7 +129,7 @@ const QuestionBank = () => {
                 if (!res.ok) throw new Error('Failed to update');
                 setNotification({ type: 'success', message: 'Question updated successfully!' });
             } else {
-                const res = await fetch('/api/questions', {
+                const res = await fetch(`${API_BASE_URL}/api/questions`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(backendPayload)
@@ -155,7 +157,7 @@ const QuestionBank = () => {
 
     const handleDeleteQuestion = async () => {
         try {
-            const res = await fetch(`/api/questions/${questionToDelete.id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/questions/${questionToDelete.id}`, {
                 method: 'DELETE'
             });
             if (!res.ok) throw new Error('Failed to delete');
@@ -171,7 +173,7 @@ const QuestionBank = () => {
     const toggleQuestionStatus = async (id, currentStatus) => {
         try {
             const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-            const res = await fetch(`/api/questions/${id}/status`, {
+            const res = await fetch(`${API_BASE_URL}/api/questions/${id}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'text/plain' },
                 body: newStatus
@@ -193,7 +195,7 @@ const QuestionBank = () => {
         formData.append('file', uploadFile);
 
         try {
-            const res = await fetch('/api/questions/bulk-upload', {
+            const res = await fetch(`${API_BASE_URL}/api/questions/bulk-upload`, {
                 method: 'POST',
                 body: formData
             });
@@ -227,7 +229,7 @@ const QuestionBank = () => {
 
     const handleDownload = async () => {
         try {
-            let url = '/api/questions/export';
+            let url = `${API_BASE_URL}/api/questions/export`;
             if (selectedExportCategories.length > 0) {
                 const ids = selectedExportCategories.join(',');
                 url += `?categoryIds=${ids}`;
@@ -956,7 +958,7 @@ const QuestionBank = () => {
                                     borderRadius: '16px', padding: '1.25rem', marginBottom: '1.5rem'
                                 }}>
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                                        {uploadResult.successCount > 0 ? <CheckCircle2 size={20} color="var(--success)" /> : <XCircle size={20} color="var(--error)" />}
+                                        {uploadResult.successCount > 0 ? <CheckCircle size={20} color="var(--success)" /> : <CircleX size={20} color="var(--error)" />}
                                         <span style={{ fontWeight: 700 }}>{uploadResult.message}</span>
                                     </div>
                                     {uploadResult.errors && uploadResult.errors.length > 0 && (

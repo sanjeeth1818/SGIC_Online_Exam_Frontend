@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Award, Clock, ChevronRight, CheckCircle, XCircle } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
+import { Award, Clock, ChevronRight, CheckCircle, CircleX } from 'lucide-react';
 
 const StudentResult = () => {
     const navigate = useNavigate();
@@ -14,7 +15,7 @@ const StudentResult = () => {
     useEffect(() => {
         const fetchGradingScales = async () => {
             try {
-                const res = await fetch('/api/settings/grading');
+                const res = await fetch(`${API_BASE_URL}/api/settings/grading`);
                 if (res.ok) {
                     const scales = await res.json();
                     setGradingScales(scales.sort((a, b) => b.minScore - a.minScore));
@@ -126,7 +127,7 @@ const StudentResult = () => {
                                     ) : (
                                         <>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.875rem 1.5rem', background: '#fef2f2', color: '#dc2626', borderRadius: '14px', border: '1px solid #fecaca', fontWeight: 900, fontSize: '1.1rem' }}>
-                                                <XCircle size={20} />
+                                                <CircleX size={20} />
                                                 <span style={{ fontSize: '0.85rem', opacity: 0.8, fontWeight: 700 }}>You:</span>
                                                 {q.studentAnswer || 'NO RESPONSE'}
                                             </div>

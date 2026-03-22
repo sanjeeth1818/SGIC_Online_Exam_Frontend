@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
@@ -54,7 +55,7 @@ const AdminLogin = () => {
         setIsLoading(true);
         setStatusMsg('');
         try {
-            const res = await fetch('/api/auth/login', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ username, password })
@@ -86,7 +87,7 @@ const AdminLogin = () => {
         setStatusMsg('');
 
         try {
-            const res = await fetch('/api/auth/forgot-password/request', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/forgot-password/request`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email })
@@ -121,7 +122,7 @@ const AdminLogin = () => {
 
         setIsVerifying(true);
         try {
-            const res = await fetch('/api/auth/forgot-password/verify', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/forgot-password/verify`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp })
@@ -168,7 +169,7 @@ const AdminLogin = () => {
         setIsLoading(true);
         setStatusMsg('');
         try {
-            const res = await fetch('/api/auth/forgot-password/reset', {
+            const res = await fetch(`${API_BASE_URL}/api/auth/forgot-password/reset`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, otp: otpArray.join(''), newPassword })
@@ -189,7 +190,7 @@ const AdminLogin = () => {
     const Header = ({ title, subtitle }) => (
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ width: '120px', height: '120px', margin: '0 auto 0.5rem auto' }}>
-                <img src="/SGIC 2.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img src="/sgic2.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>{title}</h1>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{subtitle}</p>

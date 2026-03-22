@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config/api';
 import { Clock, CheckCircle, Loader2, AlertCircle, LogOut } from 'lucide-react';
 
 // Static helper moved outside to prevent re-creation
@@ -114,7 +115,7 @@ const ExamInterface = () => {
 
         try {
             // Fetch test details first for duration and mode
-            const testRes = await fetch(`/api/exam-portal/verify/${code}`);
+            const testRes = await fetch(`${API_BASE_URL}/api/exam-portal/verify/${code}`);
             if (!testRes.ok) {
                 const errData = await testRes.json().catch(() => ({}));
                 throw new Error(errData.message || 'Test not found or access denied');
@@ -150,7 +151,7 @@ const ExamInterface = () => {
             setBaseDuration(durationSeconds);
 
             // Fetch questions FIRST to know length
-            const questRes = await fetch(`/api/exam-portal/questions/${code}`);
+            const questRes = await fetch(`${API_BASE_URL}/api/exam-portal/questions/${code}`);
             if (!questRes.ok) throw new Error('Failed to fetch questions');
             const questData = await questRes.json();
 
@@ -247,7 +248,7 @@ const ExamInterface = () => {
 
             // RESUMPTION LOGIC: Fetch previous answers if any
             try {
-                const resumeRes = await fetch(`/api/exam-portal/resume-state/${code}`);
+                const resumeRes = await fetch(`${API_BASE_URL}/api/exam-portal/resume-state/${code}`);
                 if (resumeRes.ok) {
                     const resumeData = await resumeRes.json();
                     if (resumeData.answers && Object.keys(resumeData.answers).length > 0) {
@@ -301,7 +302,7 @@ const ExamInterface = () => {
         };
 
         try {
-            await fetch('/api/submissions', {
+            await fetch(`${API_BASE_URL}/api/submissions`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
@@ -342,7 +343,7 @@ const ExamInterface = () => {
         while (attempts < maxAttempts && !success) {
             try {
                 attempts++;
-                const res = await fetch('/api/submissions', {
+                const res = await fetch(`${API_BASE_URL}/api/submissions`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(payload)
@@ -358,7 +359,7 @@ const ExamInterface = () => {
 
                 // Mark the exam code as USED
                 try {
-                    await fetch('/api/exam-entry/complete', {
+                    await fetch(`${API_BASE_URL}/api/exam-entry/complete`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ code: code })
@@ -485,7 +486,7 @@ const ExamInterface = () => {
 
             // Use navigator.sendBeacon for reliable background submission
             const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-            navigator.sendBeacon('/api/submissions', blob);
+            navigator.sendBeacon(`${API_BASE_URL}/api/submissions`, blob);
         };
 
         window.addEventListener('pagehide', handlePageHide);
@@ -540,7 +541,7 @@ const ExamInterface = () => {
                     // If the page is being hidden, fetch might still work for the brief moment before the redirect.
                     const autoSubmit = async () => {
                         try {
-                            const res = await fetch('/api/submissions', {
+                            const res = await fetch(`${API_BASE_URL}/api/submissions`, {
                                 method: 'POST',
                                 headers: { 'Content-Type': 'application/json' },
                                 body: JSON.stringify(payload)
@@ -551,7 +552,7 @@ const ExamInterface = () => {
                                 sessionStorage.setItem('lastSubmission', JSON.stringify(resultData));
                                 
                                 // Mark used
-                                await fetch('/api/exam-entry/complete', {
+                                await fetch(`${API_BASE_URL}/api/exam-entry/complete`, {
                                     method: 'POST',
                                     headers: { 'Content-Type': 'application/json' },
                                     body: JSON.stringify({ code: code })
@@ -560,10 +561,10 @@ const ExamInterface = () => {
                         } catch (err) {
                             console.error("Auto-submit fetch failed, falling back to beacon", err);
                             const blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
-                            navigator.sendBeacon('/api/submissions', blob);
+                            navigator.sendBeacon(`${API_BASE_URL}/api/submissions`, blob);
                             
                             const markUsedBlob = new Blob([JSON.stringify({ code: code })], { type: 'application/json' });
-                            navigator.sendBeacon('/api/exam-entry/complete', markUsedBlob);
+                            navigator.sendBeacon(`${API_BASE_URL}/api/exam-entry/complete`, markUsedBlob);
                         } finally {
                             sessionStorage.removeItem(`examCurrentStep_${code}`);
                             sessionStorage.removeItem(`examStartedAt_${code}`);
@@ -644,7 +645,7 @@ const ExamInterface = () => {
             try {
                 const code = sessionStorage.getItem('currentExamCode');
                 if (!code) return;
-                const testRes = await fetch(`/api/exam-portal/verify/${code}`);
+                const testRes = await fetch(`${API_BASE_URL}/api/exam-portal/verify/${code}`);
                 if (!testRes.ok) return;
 
                 const testData = await testRes.json();

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Users, FileText, Database, Layers, Calendar as CalendarIcon, Activity, ChevronRight, ChevronLeft, TrendingUp, Search, ChevronDown, X, Download, Loader } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import { jsPDF } from 'jspdf';
+import { API_BASE_URL } from '../../config/api';
 
 // --- Premium UI Components ---
 
@@ -367,7 +368,7 @@ const CategoryTrendModal = ({ category, onClose }) => {
         const fetchTrend = async () => {
             setIsLoading(true);
             try {
-                let url = `/api/dashboard/trend?category=${encodeURIComponent(category.label)}`;
+                let url = `${API_BASE_URL}/api/dashboard/trend?category=${encodeURIComponent(category.label)}`;
                 if (filterType === 'Specific Year') {
                     url += `&period=year&year=${year}`;
                 } else if (filterType === 'Specific Month') {
@@ -837,7 +838,7 @@ const Dashboard = () => {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const baseUrl = '/api/dashboard';
+            const baseUrl = `${API_BASE_URL}/api/dashboard`;
             const [statsRes, perfRes, calRes] = await Promise.all([
                 fetch(`${baseUrl}/stats?period=${period}`),
                 fetch(`${baseUrl}/category-performance?period=${period}`),

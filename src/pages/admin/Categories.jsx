@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Folder, Plus, Edit2, Trash2, Search, X, Check, AlertTriangle } from 'lucide-react';
+import { API_BASE_URL } from '../../config/api';
 
 const Categories = () => {
     const [categories, setCategories] = useState([]);
@@ -15,7 +16,7 @@ const Categories = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('/api/categories');
+            const res = await fetch(`${API_BASE_URL}/api/categories`);
             if (!res.ok) throw new Error('Failed to fetch categories');
             const data = await res.json();
             setCategories(data);
@@ -55,7 +56,7 @@ const Categories = () => {
 
         try {
             if (editingCategory) {
-                const res = await fetch(`/api/categories/${editingCategory.id}`, {
+                const res = await fetch(`${API_BASE_URL}/api/categories/${editingCategory.id}`, {
                     method: 'PUT',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -77,7 +78,7 @@ const Categories = () => {
                 }
                 setNotification({ type: 'success', message: 'Category updated successfully!' });
             } else {
-                const res = await fetch('/api/categories', {
+                const res = await fetch(`${API_BASE_URL}/api/categories`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ ...categoryForm, status: 'Active', questionCount: 0 })
@@ -110,7 +111,7 @@ const Categories = () => {
 
     const handleDelete = async () => {
         try {
-            const res = await fetch(`/api/categories/${categoryToDelete.id}`, {
+            const res = await fetch(`${API_BASE_URL}/api/categories/${categoryToDelete.id}`, {
                 method: 'DELETE'
             });
             if (!res.ok) {
@@ -136,7 +137,7 @@ const Categories = () => {
     const toggleStatus = async (id, currentStatus) => {
         try {
             const newStatus = currentStatus === 'Active' ? 'Inactive' : 'Active';
-            const res = await fetch(`/api/categories/${id}/status`, {
+            const res = await fetch(`${API_BASE_URL}/api/categories/${id}/status`, {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'text/plain' },
                 body: newStatus
