@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../config/api';
 import { Clock, BookOpen, AlertCircle, Check, User, ArrowRight } from 'lucide-react';
+import sgicLogo from '../../assets/sgic2.png';
 
 const TestStart = () => {
     const navigate = useNavigate();
@@ -181,7 +182,7 @@ const TestStart = () => {
                 <div style={{ position: 'relative', zIndex: 1 }}>
                     <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
                         <div style={{ width: '120px', height: '120px', borderRadius: '24px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                            <img src="/sgic2.png" alt="SGIC Logo" style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
+                            <img src={sgicLogo} alt="SGIC Logo" style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
                         </div>
                         <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Examination Portal</h1>
                         <p style={{ color: 'var(--text-tertiary)', fontSize: '0.94rem', fontWeight: 600 }}>Secure Assessment System</p>

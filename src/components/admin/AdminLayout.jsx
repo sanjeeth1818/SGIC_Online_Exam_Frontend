@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { LayoutDashboard, FolderTree, FileQuestion, FilePlus, ClipboardList, Settings, LogOut, Users, LayoutGrid } from 'lucide-react';
+import sgicLogo from '../../assets/sgic2.png';
 
 const AdminLayout = () => {
     const location = useLocation();
@@ -53,7 +54,7 @@ const AdminLayout = () => {
             }}>
                 <div style={{ padding: '1.25rem 1.5rem', borderBottom: '1px solid var(--border)', display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
                     <img
-                        src="/sgic2.png"
+                        src={sgicLogo}
                         alt="SGIC Logo"
                         style={{ width: '80px', height: '80px', objectFit: 'contain' }}
                     />

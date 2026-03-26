@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 import { Lock, Mail, ArrowRight } from 'lucide-react';
 import { API_BASE_URL } from '../../config/api';
+import sgicLogo from '../../assets/sgic2.png';
 
 const AdminLogin = () => {
     const navigate = useNavigate();
@@ -190,7 +191,7 @@ const AdminLogin = () => {
     const Header = ({ title, subtitle }) => (
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
             <div style={{ width: '120px', height: '120px', margin: '0 auto 0.5rem auto' }}>
-                <img src="/sgic2.png" alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
+                <img src={sgicLogo} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
             </div>
             <h1 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '0.25rem' }}>{title}</h1>
             <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{subtitle}</p>

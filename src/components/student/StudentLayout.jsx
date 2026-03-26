@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Outlet, NavLink, useLocation } from 'react-router-dom';
 import { User, LogOut } from 'lucide-react';
+import sgicLogo from '../../assets/sgic.png';
 
 const StudentLayout = () => {
     const location = useLocation();
@@ -36,7 +37,7 @@ const StudentLayout = () => {
                 zIndex: 100
             }}>
                 {/* Logo */}
-                <img src="/sgic.png" alt="SGIC Logo" style={{ height: '90px', objectFit: 'contain' }} />
+                <img src={sgicLogo} alt="SGIC Logo" style={{ height: '90px', objectFit: 'contain' }} />
 
                 {!isLoginPage && (
                     <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', animation: 'fadeIn 0.3s ease' }}>
