@@ -1933,8 +1933,8 @@ const CreateTest = () => {
 
                                                         const isDateLocked = group.examDate && examDate <= today;
                                                         const hasStudentStarted = group.students?.some(s => {
-                                                            const codeEntry = studentCodes.find(c => c.studentId === s.id);
-                                                            return codeEntry && (codeEntry.status === 'STARTED' || codeEntry.status === 'USED');
+                                                            const codeEntry = studentCodes.find(c => c.studentId == s.id && c.examDate === group.examDate);
+                                                            return codeEntry && (codeEntry.status?.toUpperCase() === 'STARTED' || codeEntry.status?.toUpperCase() === 'USED');
                                                         });
 
                                                         const isEditLocked = isDateLocked || hasStudentStarted;
@@ -1983,8 +1983,8 @@ const CreateTest = () => {
 
                                                     const isDateLocked = group.examDate && examDate <= today;
                                                     const hasStudentStarted = group.students?.some(s => {
-                                                        const codeEntry = studentCodes.find(c => c.studentId === s.id);
-                                                        return codeEntry && (codeEntry.status === 'STARTED' || codeEntry.status === 'USED');
+                                                        const codeEntry = studentCodes.find(c => c.studentId == s.id && c.examDate === group.examDate);
+                                                        return codeEntry && (codeEntry.status?.toUpperCase() === 'STARTED' || codeEntry.status?.toUpperCase() === 'USED');
                                                     });
 
                                                     const isBatchLocked = (isDateLocked && group.isPersisted) || hasStudentStarted;
@@ -2051,14 +2051,14 @@ const CreateTest = () => {
                                                     today.setHours(0, 0, 0, 0);
                                                     const examDate = new Date(group.examDate);
                                                     examDate.setHours(0, 0, 0, 0);
-                                                    const isDateLocked = group.examDate && examDate <= today;
+                                                    const isDateLocked = group.examDate && examDate < today;
 
-                                                    const codeEntry = studentCodes.find(c => c.studentId === s.id);
-                                                    const hasStarted = codeEntry && (codeEntry.status === 'STARTED' || codeEntry.status === 'USED');
+                                                    const codeEntry = studentCodes.find(c => c.studentId == s.id && c.examDate === group.examDate);
+                                                    const hasStarted = codeEntry && (codeEntry.status?.toUpperCase() === 'STARTED' || codeEntry.status?.toUpperCase() === 'USED');
                                                     const isLocked = hasStarted || (isDateLocked && s.isPersisted);
                                                     const lockReason = hasStarted
                                                         ? "Cannot remove: Exam session in progress or completed"
-                                                        : "Cannot remove: Existing student in a batch scheduled for today or in the past";
+                                                        : "Cannot remove: Existing student in a batch scheduled in the past";
 
                                                     return (
                                                         <div key={s.id} style={{
@@ -2485,7 +2485,7 @@ const CreateTest = () => {
                                             <span style={{ fontWeight: 600 }}>Fetching Secure Access Codes...</span>
                                         </div>
                                     ) : studentCodes.length > 0 ? (
-                                        studentCodes.map((codeData, idx) => (
+                                        [...studentCodes].sort((a, b) => (a.status === 'USED' ? 1 : 0) - (b.status === 'USED' ? 1 : 0)).map((codeData, idx) => (
                                             <div key={idx} style={{ background: 'var(--bg-surface)', padding: '1.25rem', borderRadius: '18px', border: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', transition: 'all 0.2s' }}
                                                 onMouseEnter={e => e.currentTarget.style.borderColor = 'var(--primary-border)'}
                                                 onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}

@@ -173,35 +173,35 @@ const TestStart = () => {
         <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', animation: 'fadeIn 0.5s ease' }}>
             <div style={{
                 width: '100%', maxWidth: '480px', background: 'var(--bg-surface)', borderRadius: '32px',
-                padding: '2.5rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', border: '1px solid var(--border)',
+                padding: '1.5rem', boxShadow: '0 20px 50px rgba(0,0,0,0.1)', border: '1px solid var(--border)',
                 position: 'relative', overflow: 'hidden'
             }}>
                 {/* Decorative background element */}
                 <div style={{ position: 'absolute', top: '-100px', right: '-100px', width: '200px', height: '200px', borderRadius: '50%', background: 'var(--primary-light)', opacity: 0.5, zIndex: 0 }} />
 
                 <div style={{ position: 'relative', zIndex: 1 }}>
-                    <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                        <div style={{ width: '120px', height: '120px', borderRadius: '24px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', boxShadow: 'var(--shadow-sm)' }}>
-                            <img src={sgicLogo} alt="SGIC Logo" style={{ width: '80%', height: '80%', objectFit: 'contain' }} />
+                    <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                        <div style={{ width: '115px', height: '115px', borderRadius: '22px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.75rem', boxShadow: 'var(--shadow-sm)' }}>
+                            <img src={sgicLogo} alt="SGIC Logo" style={{ width: '90%', height: '90%', objectFit: 'contain' }} />
                         </div>
-                        <h1 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Examination Portal</h1>
-                        <p style={{ color: 'var(--text-tertiary)', fontSize: '0.94rem', fontWeight: 600 }}>Secure Assessment System</p>
+                        <h1 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.2rem' }}>Examination Portal</h1>
+                        <p style={{ color: 'var(--text-tertiary)', fontSize: '0.8rem', fontWeight: 600 }}>Secure Assessment System</p>
                     </div>
 
                     {!isCodeVerified ? (
                         <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                                <p style={{ color: 'var(--text-secondary)', fontWeight: 500 }}>Enter your unique 4-digit code sent to your email.</p>
+                            <div style={{ textAlign: 'center', marginBottom: '1.5rem' }}>
+                                <p style={{ color: 'var(--text-secondary)', fontWeight: 500, fontSize: '0.875rem' }}>Enter your unique 4-digit code sent to your email.</p>
                             </div>
 
                             {error && (
-                                <div style={{ background: 'rgba(239, 68, 68, 0.08)', color: 'var(--error)', padding: '1rem', borderRadius: '16px', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem', fontWeight: 700, border: '1px solid rgba(239, 68, 68, 0.1)' }}>
-                                    <AlertCircle size={18} />
+                                <div style={{ background: 'rgba(239, 68, 68, 0.08)', color: 'var(--error)', padding: '0.875rem', borderRadius: '14px', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.6rem', fontSize: '0.8125rem', fontWeight: 700, border: '1px solid rgba(239, 68, 68, 0.1)' }}>
+                                    <AlertCircle size={16} />
                                     {error}
                                 </div>
                             )}
 
-                            <form onSubmit={handleVerifyCode} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                            <form onSubmit={handleVerifyCode} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
                                 <div style={{ display: 'flex', justifyContent: 'center', gap: '0.75rem' }}>
                                     <input
                                         type="text"
@@ -215,8 +215,8 @@ const TestStart = () => {
                                         placeholder="0000"
                                         required
                                         style={{
-                                            width: '100%', padding: '1.25rem', borderRadius: '20px', border: `3px solid ${error ? 'var(--error)' : 'var(--border)'}`,
-                                            fontSize: '2.5rem', outline: 'none', transition: 'all 0.2s', textAlign: 'center',
+                                            width: '100%', padding: '1rem', borderRadius: '16px', border: `3px solid ${error ? 'var(--error)' : 'var(--border)'}`,
+                                            fontSize: '2rem', outline: 'none', transition: 'all 0.2s', textAlign: 'center',
                                             letterSpacing: '0.5em', fontWeight: 900, color: 'var(--primary)', background: 'var(--bg-app)'
                                         }}
                                         onFocus={e => { if (!error) e.currentTarget.style.borderColor = 'var(--primary)'; }}
@@ -227,7 +227,7 @@ const TestStart = () => {
                                     type="submit"
                                     disabled={examCode.length !== 4 || isValidating}
                                     style={{
-                                        width: '100%', padding: '1.125rem', borderRadius: '20px', fontWeight: 800, fontSize: '1.125rem',
+                                        width: '100%', padding: '1rem', borderRadius: '16px', fontWeight: 800, fontSize: '1rem',
                                         color: 'white', background: examCode.length === 4 ? 'var(--primary)' : 'var(--text-tertiary)',
                                         border: 'none', cursor: examCode.length === 4 ? 'pointer' : 'not-allowed',
                                         boxShadow: examCode.length === 4 ? '0 10px 25px rgba(var(--primary-rgb), 0.3)' : 'none',
@@ -240,22 +240,22 @@ const TestStart = () => {
                         </div>
                     ) : (
                         <div style={{ animation: 'fadeIn 0.3s ease' }}>
-                            <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                                <div style={{ display: 'inline-flex', background: 'var(--success-light)', color: 'var(--success)', padding: '0.5rem 1rem', borderRadius: '12px', fontSize: '0.8125rem', fontWeight: 800, marginBottom: '1.25rem', alignItems: 'center', gap: '0.5rem', border: '1px solid var(--success-border)' }}>
-                                    <Check size={16} /> Verified Access
+                            <div style={{ textAlign: 'center', marginBottom: '1rem' }}>
+                                <div style={{ display: 'inline-flex', background: 'var(--success-light)', color: 'var(--success)', padding: '0.25rem 0.6rem', borderRadius: '8px', fontSize: '0.7rem', fontWeight: 800, marginBottom: '0.4rem', alignItems: 'center', gap: '0.4rem', border: '1px solid var(--success-border)' }}>
+                                    <Check size={14} /> Verified Access
                                 </div>
-                                <h2 style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.5rem' }}>Welcome, {studentName}</h2>
-                                <p style={{ color: 'var(--text-tertiary)', fontSize: '0.875rem', fontWeight: 600 }}>Authorized for: <span style={{ color: 'var(--primary)' }}>{testDetails?.name}</span></p>
+                                <h2 style={{ fontSize: '1.3rem', fontWeight: 800, color: 'var(--text-primary)', marginBottom: '0.15rem' }}>Welcome, {studentName}</h2>
+                                <p style={{ color: 'var(--text-tertiary)', fontSize: '0.75rem', fontWeight: 600 }}>Authorized for: <span style={{ color: 'var(--primary)' }}>{testDetails?.name}</span></p>
                             </div>
 
-                            <div style={{ background: 'var(--bg-app)', padding: '1.5rem', borderRadius: '24px', marginBottom: '2rem', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', color: 'var(--text-secondary)' }}>
-                                    <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-sm)' }}>
-                                        <Clock size={18} color="var(--primary)" />
+                            <div style={{ background: 'var(--bg-app)', padding: '0.875rem', borderRadius: '16px', marginBottom: '1rem', border: '1px solid var(--border)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-secondary)' }}>
+                                    <div style={{ width: '32px', height: '32px', borderRadius: '10px', background: 'white', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: 'var(--shadow-sm)' }}>
+                                        <Clock size={16} color="var(--primary)" />
                                     </div>
                                     <div style={{ flex: 1 }}>
-                                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Available Time</div>
-                                        <div style={{ fontWeight: 700, fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+                                        <div style={{ fontSize: '0.65rem', fontWeight: 800, color: 'var(--text-tertiary)', textTransform: 'uppercase' }}>Available Time</div>
+                                        <div style={{ fontWeight: 700, fontSize: '0.94rem', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                                             {testDetails?.isReopened ? (
                                                 <span style={{ color: 'var(--primary)' }}>{testDetails.additionalTime} Minutes (Remaining Session)</span>
                                             ) : (
@@ -263,7 +263,7 @@ const TestStart = () => {
                                                     {testDetails?.duration} {getTimeUnitLabel()}
                                                     {testDetails?.timeMode === 'question' ? ' (Per Question)' : ''}
                                                     {testDetails?.additionalTime > 0 && (
-                                                        <span style={{ fontSize: '0.75rem', background: 'var(--success-light)', color: 'var(--success)', padding: '0.2rem 0.5rem', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                                                        <span style={{ fontSize: '0.7rem', background: 'var(--success-light)', color: 'var(--success)', padding: '0.2rem 0.5rem', borderRadius: '6px', whiteSpace: 'nowrap' }}>
                                                             + {testDetails.additionalTime} mins Extra
                                                         </span>
                                                     )}
@@ -274,11 +274,20 @@ const TestStart = () => {
                                 </div>
                             </div>
 
-                            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+                                <div style={{ background: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '0.75rem', borderRadius: '12px', display: 'flex', gap: '0.6rem', alignItems: 'flex-start' }}>
+                                    <AlertCircle size={16} color="var(--error)" style={{ flexShrink: 0, marginTop: '1px' }} />
+                                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.2rem' }}>
+                                        <div style={{ fontSize: '0.7rem', fontWeight: 800, color: 'var(--error)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Strict Proctoring Active</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-secondary)', fontWeight: 500, lineHeight: 1.3 }}>
+                                            Leaving this screen, switching tabs, or minimizing the browser will <strong style={{ color: 'var(--error)' }}>automatically close</strong> your examination.
+                                        </div>
+                                    </div>
+                                </div>
                                 <button
                                     onClick={handleStart}
                                     style={{
-                                        width: '100%', padding: '1.25rem', borderRadius: '20px', fontWeight: 800, fontSize: '1.25rem',
+                                        width: '100%', padding: '1rem', borderRadius: '16px', fontWeight: 800, fontSize: '1.125rem',
                                         color: 'white', background: 'var(--primary)', border: 'none', cursor: 'pointer',
                                         boxShadow: '0 10px 30px rgba(var(--primary-rgb), 0.3)', transition: 'all 0.2s'
                                     }}
